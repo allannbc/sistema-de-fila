@@ -69,7 +69,7 @@ Digitalizar e otimizar o processo de gerenciamento de filas, garantindo:
 
     * Botão "Chamar Próximo" (que respeita a regra de prioridade).
 
-    * Botão para tela de edição.
+    * Botão para gerar relatório.
 
 3. Tela de Monitoramento (Painel Público / Gerencial)
 
