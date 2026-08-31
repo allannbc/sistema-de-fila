@@ -14,3 +14,11 @@ relatórios a partir da página do atendente.
 [Relatórios](/src/relatorios.html)
 
 [Dashboard da fila](/src/tv-monitoramento.html)
+
+## Decisões
+
+Todas as telas são bem simples, e a única que pode interagir com o resto é a tela do atendente, pois não
+há necessidade do cliente poder acessar qualquer página se não a para pegar sua senha.
+
+Cada uma tem uma tag header que diferencia cada página, implementando o contéudo principal dentro da
+tag main e um footer para outras informações.
