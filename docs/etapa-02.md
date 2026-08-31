@@ -7,10 +7,10 @@ relatórios a partir da página do atendente.
 
 ## Páginas Criadas
 
-[Painel do atendente](src/painel-atendente.html)
+[Painel do atendente](/src/painel-atendente.html)
 
-[Quiosque do cliente](src/quiosque-cliente.html)
+[Quiosque do cliente](/src/quiosque-cliente.html)
 
-[Relatórios](src/relatorios.html)
+[Relatórios](/src/relatorios.html)
 
-[Dashboard da fila](src/tv-monitoramento.html)
+[Dashboard da fila](/src/tv-monitoramento.html)
