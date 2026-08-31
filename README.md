@@ -90,3 +90,7 @@ Digitalizar e otimizar o processo de gerenciamento de filas, garantindo:
 4. Ignorar a próxima senha.
 
 5. Mostrar todas as senhas atuais ainda não atendidas.
+
+# Documentos
+
+[Documentação da etapa 2](docs/etapa-02.md)
