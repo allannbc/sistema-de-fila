@@ -1,98 +1,83 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Relatórios - QueueSmart</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Relatórios - QueueSmart</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/admin.css">
+    </head>
+    <body class="theme-admin">
 
-    <header>
-        <h1>🎫 Sistema de Fila</h1>
-        <p>Relatórios Gerenciais</p>
-        <nav>
-            <ul>
-                <li><a href="painel-atendente.html">Painel do Atendente</a></li>
-            </ul>
-        </nav>
-    </header>
-
-    <main>
-        <section>
-            <form action="#" method="GET">
-                <div>
-                    <button type="submit">Gerar Relatório</button>
-                    <button type="reset">Limpar</button>
-                    <button type="button">Exportar PDF</button>
-                    <button type="button">Exportar Excel</button>
-                </div>
-            </form>
-        </section>
-
-        <section>
-            <h2>Relatório Gerencial</h2>
-            <p>Período: 01/08/2026 a 31/08/2026</p>
-
-            <section>
-                <h3>Resumo</h3>
-                <ul>
-                    <li>Total de Atendimentos: 1.847</li>
-                    <li>Preferenciais: 384</li>
-                    <li>Taxa de Prioridade: 22%</li>
-                    <li>Tempo Médio de Espera: 8.2 min</li>
-                    <li>Tempo Médio de Atendimento: 5.7 min</li>
-                    <li>Taxa de Satisfação: 98%</li>
+        <header class="site-header">
+            <div class="brand">
+                <h1>🎫 Sistema de Fila</h1>
+                <p>Relatórios Gerenciais</p>
+            </div>
+            <nav class="site-nav" aria-label="Navegação principal">
+                <ul class="nav-list">
+                    <li><a href="painel-atendente.html">Painel do Atendente</a></li>
                 </ul>
-            </section>
+            </nav>
+        </header>
 
-            <section>
-                <h3>Detalhamento por Atendente</h3>
-                <table border="1">
-                    <thead>
-                        <tr>
-                            <th>Atendente</th>
-                            <th>Guichê</th>
-                            <th>Atendimentos</th>
-                            <th>Média (min)</th>
-                            <th>Prioridades</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    <tfoot>
-                        <tr>
-                            <th colspan="2">Totais</th>
-                            <th>1.480</th>
-                            <th>5.7</th>
-                            <th>306</th>
-                        </tr>
-                    </tfoot>
-                </table>
-            </section>
+        <main class="admin-main">
+            <div class="container">
+                <section class="toolbar card">
+                    <form class="toolbar-form" action="#" method="GET">
+                        <div class="toolbar-actions">
+                            <button class="btn btn--primary" type="submit">Gerar Relatório</button>
+                            <button class="btn btn--secondary" type="reset">Limpar</button>
+                            <button class="btn btn--secondary" type="button">Exportar PDF</button>
+                            <button class="btn btn--secondary" type="button">Exportar Excel</button>
+                        </div>
+                    </form>
+                </section>
 
-            <section>
-                <h3>Distribuição por Prioridade</h3>
-                <ul>
-                    <li>Normal: 1.463 (78%)</li>
-                    <li>Preferencial: 384 (22%)</li>
-                </ul>
-            </section>
+                <section class="report card">
+                    <h2>Relatório Gerencial</h2>
+                    <p class="report-meta">Período: 01/08/2026 a 31/08/2026</p>
 
-            <section>
-                <h3>Atendimentos por Horário</h3>
-                <ul>
-                    <li>08:00 - 10:00: 320 atendimentos</li>
-                    <li>10:00 - 12:00: 450 atendimentos</li>
-                    <li>12:00 - 14:00: 280 atendimentos</li>
-                    <li>14:00 - 16:00: 410 atendimentos</li>
-                    <li>16:00 - 18:00: 387 atendimentos</li>
-                </ul>
-            </section>
-        </section>
-    </main>
+                    <section>
+                        <h3>Resumo</h3>
+                        <ul class="stat-grid">
+                            <li class="stat-card"><span class="stat-value">1.847</span><span class="stat-label">Total de Atendimentos</span></li>
+                            <li class="stat-card"><span class="stat-value">384</span><span class="stat-label">Preferenciais</span></li>
+                            <li class="stat-card"><span class="stat-value">22%</span><span class="stat-label">Taxa de Prioridade</span></li>
+                            <li class="stat-card"><span class="stat-value">8.2 min</span><span class="stat-label">Tempo Médio de Espera</span></li>
+                            <li class="stat-card"><span class="stat-value">5.7 min</span><span class="stat-label">Tempo Médio de Atendimento</span></li>
+                            <li class="stat-card"><span class="stat-value">98%</span><span class="stat-label">Taxa de Satisfação</span></li>
+                        </ul>
+                    </section>
 
-    <footer>
-        <p>&copy; 2026 Sistema de Fila - Relatórios Gerenciais</p>
-    </footer>
+                    <section>
+                        <h3>Distribuição por Prioridade</h3>
+                        <ul>
+                            <li>Normal: 1.463 (78%)</li>
+                            <li>Preferencial: 384 (22%)</li>
+                        </ul>
+                    </section>
 
-</body>
+                    <section>
+                        <h3>Atendimentos por Horário</h3>
+                        <ul>
+                            <li>08:00 - 10:00: 320 atendimentos</li>
+                            <li>10:00 - 12:00: 450 atendimentos</li>
+                            <li>12:00 - 14:00: 280 atendimentos</li>
+                            <li>14:00 - 16:00: 410 atendimentos</li>
+                            <li>16:00 - 18:00: 387 atendimentos</li>
+                        </ul>
+                    </section>
+                </section>
+            </div>
+        </main>
+
+        <footer class="site-footer">
+            <p>&copy; 2026 Sistema de Fila - Relatórios Gerenciais</p>
+        </footer>
+
+    </body>
 </html>

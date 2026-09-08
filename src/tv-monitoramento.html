@@ -4,53 +4,57 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Monitoramento - QueueSmart TV</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/public.css">
 </head>
-<body>
+<body class="theme-public">
 
-    <header>
-        <div>
+    <header class="tv-header">
+        <div class="brand">
             <h1>🎫 Sistema de Fila</h1>
             <p>Agência 001</p>
         </div>
-        <div>
-            <p>14:32:45</p>
+        <div class="tv-clock">
+            <p><time>14:32:45</time></p>
             <p>31/08/2026</p>
         </div>
     </header>
 
     <main>
-        <section>
+        <section class="tv-now-serving">
             <h2>Chamando Agora</h2>
-            <p><strong>A-035 - Fábio Pereira</strong></p>
-            <p>Guichê 03</p>
-            <p>Próximo: <strong>A-037</strong> (Preferencial)</p>
-            <p>Prioridade: 2 preferenciais para 1 normal</p>
+            <p class="ticket-code">A-035 - Fábio Pereira</p>
+            <p class="counter">Guichê 03</p>
+            <p class="next-up">Próximo: <strong>A-037</strong> <span class="badge badge--preferencial">Preferencial</span></p>
+            <p class="counter">Prioridade: 2 preferenciais para 1 normal</p>
         </section>
     </main>
 
-    <footer>
-        <section>
+    <footer class="tv-grid">
+        <section class="tv-panel tv-panel--queue">
             <h3>Próximos da Fila</h3>
-            <ul>
-                <li>A-037 (Preferencial)</li>
+            <ul class="queue-chips">
+                <li>A-037 <span class="badge badge--preferencial">Pref.</span></li>
                 <li>A-036</li>
                 <li>A-038</li>
-                <li>A-040 (Preferencial)</li>
+                <li>A-040 <span class="badge badge--preferencial">Pref.</span></li>
                 <li>A-039</li>
                 <li>A-041</li>
                 <li>A-042</li>
-                <li>A-043 (Preferencial)</li>
+                <li>A-043 <span class="badge badge--preferencial">Pref.</span></li>
             </ul>
-            <p>Total: 8 aguardando</p>
+            <p class="queue-total">Total: 8 aguardando</p>
         </section>
 
-        <section>
-            <ul>
-                <li>Tempo médio de espera: 8 min</li>
-            </ul>
+        <section class="tv-panel tv-panel--stats">
+            <h3>Tempo médio de espera</h3>
+            <p class="stat-value">8 min</p>
         </section>
 
-        <section>
+        <section class="tv-panel tv-panel--alerts">
             <h3>Avisos</h3>
             <p>Senha A-035 chamada - Guichê 03</p>
             <p>Mantenha distanciamento social</p>

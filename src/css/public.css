@@ -1,0 +1,322 @@
+/* =========================================================================
+   PUBLIC.CSS
+   Sistema de Fila — QueueSmart
+   Usado por: quiosque-cliente.html e tv-monitoramento.html
+   (telas voltadas ao público: precisam ser simples, calmas e legíveis
+   à distância ou em um toque rápido — por isso tipografia maior,
+   menos elementos por tela e alto contraste)
+
+   Breakpoints usados neste arquivo:
+   - até 599px    → base (smartphone)
+   - min 600px    → tablet
+   - min 1024px   → desktop / TV
+
+   Índice:
+   1. Base da página pública
+   2. Quiosque — cabeçalho e senha chamada
+   3. Quiosque — formulário de emissão
+   4. TV — cabeçalho com relógio
+   5. TV — painel "chamando agora"
+   6. TV — grade inferior (fila, tempo médio, avisos)
+   ========================================================================= */
+
+/* -------------------------------------------------------------------- */
+/* 1. BASE DA PÁGINA PÚBLICA                                             */
+/* -------------------------------------------------------------------- */
+body.theme-public {
+  background: linear-gradient(180deg, var(--color-brand-tint) 0%, var(--color-bg) 320px);
+  min-height: 100vh;
+}
+
+.public-container {
+  width: 100%;
+  max-width: 960px;
+  margin-inline: auto;
+  padding: var(--space-5) var(--space-4) var(--space-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+@media (min-width: 600px) {
+  .public-container {
+    padding: var(--space-6) var(--space-6) var(--space-8);
+    gap: var(--space-6);
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 2. QUIOSQUE — CABEÇALHO E SENHA CHAMADA                               */
+/* -------------------------------------------------------------------- */
+.kiosk-header {
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.kiosk-header h1 {
+  font-size: var(--fs-xl);
+  color: var(--color-brand-dark);
+}
+
+.kiosk-header p {
+  max-width: 40ch;
+  margin-inline: auto;
+  color: var(--color-ink-muted);
+  font-size: var(--fs-md);
+}
+
+.last-called {
+  text-align: center;
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+.last-called h2 {
+  font-size: var(--fs-sm);
+  text-transform: none;
+  color: var(--color-ink-muted);
+  font-family: var(--font-body);
+  font-weight: 600;
+}
+
+.last-called .ticket-code {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--color-brand);
+}
+
+/* -------------------------------------------------------------------- */
+/* 3. QUIOSQUE — FORMULÁRIO DE EMISSÃO                                   */
+/* -------------------------------------------------------------------- */
+.kiosk-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.kiosk-form input[type="text"] {
+  padding: var(--space-4);
+  font-size: var(--fs-lg);
+  text-align: center;
+}
+
+.kiosk-actions {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.kiosk-actions .btn {
+  padding: var(--space-5);
+  font-size: var(--fs-md);
+}
+
+@media (min-width: 600px) {
+  .kiosk-actions {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.kiosk-footer {
+  text-align: center;
+  align-items: center;
+  color: var(--color-ink-muted);
+  font-size: var(--fs-sm);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+}
+
+/* -------------------------------------------------------------------- */
+/* 4. TV — CABEÇALHO COM RELÓGIO                                         */
+/* -------------------------------------------------------------------- */
+.tv-header {
+  background: var(--color-brand-dark);
+  color: #ffffff;
+  padding: var(--space-5) var(--space-4);
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.tv-header h1 {
+  color: #ffffff;
+  font-size: var(--fs-lg);
+}
+
+.tv-header .brand p {
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0;
+}
+
+.tv-clock {
+  text-align: right;
+}
+
+.tv-clock p:first-child {
+  font-family: var(--font-display);
+  font-size: var(--fs-lg);
+  font-variant-numeric: tabular-nums;
+}
+
+.tv-clock p:last-child {
+  color: rgba(255, 255, 255, 0.75);
+  font-size: var(--fs-sm);
+}
+
+@media (min-width: 1024px) {
+  .tv-header {
+    padding: var(--space-6) var(--space-7);
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 5. TV — PAINEL "CHAMANDO AGORA"                                       */
+/* -------------------------------------------------------------------- */
+.tv-now-serving {
+  text-align: center;
+  background: var(--color-surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6) var(--space-4);
+  margin: var(--space-5) var(--space-4);
+  box-shadow: var(--shadow-md);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.tv-now-serving h2 {
+  font-family: var(--font-body);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+}
+
+.tv-now-serving .ticket-code {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  color: var(--color-brand);
+}
+
+.tv-now-serving .counter {
+  font-size: var(--fs-md);
+  color: var(--color-ink-muted);
+}
+
+.tv-now-serving .next-up strong {
+  color: var(--color-brand-dark);
+}
+
+@media (min-width: 1024px) {
+  .tv-now-serving {
+    margin: var(--space-6) var(--space-7);
+    padding: var(--space-7);
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 6. TV — GRADE INFERIOR (FILA, TEMPO MÉDIO, AVISOS)                    */
+/* -------------------------------------------------------------------- */
+.tv-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-areas:
+    "queue"
+    "stats"
+    "alerts";
+  gap: var(--space-4);
+  padding: 0 var(--space-4) var(--space-6);
+}
+
+.tv-panel {
+  background: var(--color-surface);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  box-shadow: var(--shadow-sm);
+}
+
+.tv-panel--queue { grid-area: queue; }
+.tv-panel--stats { grid-area: stats; text-align: center; }
+.tv-panel--alerts { grid-area: alerts; }
+
+.tv-panel h3 {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-muted);
+  margin-bottom: var(--space-3);
+}
+
+.queue-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
+
+.queue-chips li {
+  background: var(--color-brand-tint);
+  color: var(--color-brand-dark);
+  padding: var(--space-2) var(--space-4);
+  border-radius: 999px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+}
+
+.tv-panel--queue .queue-total {
+  margin-top: var(--space-3);
+  color: var(--color-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.tv-panel--stats .stat-value {
+  font-family: var(--font-display);
+  font-size: var(--fs-xl);
+  color: var(--color-brand-dark);
+}
+
+.tv-panel--stats .stat-label {
+  color: var(--color-ink-muted);
+  font-size: var(--fs-sm);
+}
+
+.tv-panel--alerts p {
+  padding: var(--space-2) 0 var(--space-2) var(--space-3);
+  border-left: 3px solid var(--color-preferencial);
+  font-size: var(--fs-sm);
+  margin-bottom: var(--space-2);
+}
+
+.tv-panel--alerts p:last-child {
+  margin-bottom: 0;
+}
+
+@media (max-width: 600px) {
+  .tv-grid {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-areas:
+      "queue queue"
+      "stats alerts";
+    padding: 0 var(--space-6) var(--space-7);
+  }
+
+  .queue-chips {
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+@media (min-width: 601px max-width: 1024px) {
+  .tv-grid {
+    grid-template-columns: 1.6fr 1fr 1fr;
+    grid-template-areas: "queue stats alerts";
+    padding: 0 var(--space-7) var(--space-8);
+  }
+}

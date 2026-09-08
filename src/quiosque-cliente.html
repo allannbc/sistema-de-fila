@@ -4,40 +4,51 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiosque - Emissão de Senha</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/base.css">
+    <link rel="stylesheet" href="css/public.css">
 </head>
-<body>
+<body class="theme-public">
 
-    <header>
-        <h1>🎫 Sistema de Fila</h1>
-        <p>Bem-vindo! Emita sua senha para atendimento</p>
-    </header>
+    <div class="public-container">
 
-    <section>
-        <h2>Última senha chamada</h2>
-        <p><strong>A-035</strong></p>
-        <p>Guichê 03 - Chamado às 14:28</p>
-    </section>
+        <header class="kiosk-header">
+            <h1>🎫 Sistema de Fila</h1>
+            <p>Bem-vindo! Emita sua senha para atendimento</p>
+        </header>
 
-    <main>
-        <form action="#" method="POST">
-            <fieldset>
-                <legend>Dados do Cliente</legend>
+        <section class="last-called card">
+            <h2>Última senha chamada</h2>
+            <p class="ticket-code">A-035</p>
+            <p>Guichê 03 - Chamado às 14:28</p>
+        </section>
 
-                <label for="nome-cliente">Seu nome:</label>
-                <input type="text" id="nome-cliente" name="nome" placeholder="Digite seu nome completo" required>
+        <main class="card">
+            <form class="kiosk-form" action="#" method="POST">
+                <fieldset>
+                    <legend>Dados do Cliente</legend>
 
-                <div>
-                    <button type="submit">Emitir Senha Normal</button>
-                    <button type="submit">Emitir Senha Preferencial</button>
-                </div>
-            </fieldset>
-        </form>
-    </main>
+                    <div>
+                        <label for="nome-cliente">Seu nome:</label>
+                        <input type="text" id="nome-cliente" name="nome" placeholder="Digite seu nome completo" required>
+                    </div>
 
-    <footer>
-        <p><strong>Atendimento Preferencial:</strong> 2 preferenciais para 1 normal</p>
-        <p>Para dúvidas, fale com nosso atendente</p>
-    </footer>
+                    <div class="kiosk-actions">
+                        <button class="btn btn--primary" type="submit">Emitir Senha Normal</button>
+                        <button class="btn btn--secondary" type="submit">Emitir Senha Preferencial</button>
+                    </div>
+                </fieldset>
+            </form>
+        </main>
+
+        <footer class="kiosk-footer">
+            <p><strong>Atendimento Preferencial:</strong> 2 preferenciais para 1 normal</p>
+            <p>Para dúvidas, fale com nosso atendente</p>
+        </footer>
+
+    </div>
 
 </body>
 </html>

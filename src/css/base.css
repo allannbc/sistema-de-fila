@@ -1,0 +1,375 @@
+/* =========================================================================
+   BASE.CSS
+   Sistema de Fila — QueueSmart
+   Fundação compartilhada por TODAS as telas (admin + público).
+   Carregar sempre antes de admin.css ou public.css.
+
+   Índice:
+   1. Reset
+   2. Tokens (cores, espaçamento, tipografia, raio, sombra)
+   3. Tipografia base
+   4. Layout helpers (container, table-wrap, visually-hidden)
+   5. Botões
+   6. Badges (normal / preferencial)
+   7. Cards
+   8. Formulários
+   9. Acessibilidade (foco, movimento reduzido)
+   ========================================================================= */
+
+/* -------------------------------------------------------------------- */
+/* 1. RESET                                                              */
+/* -------------------------------------------------------------------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+ul,
+ol {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+h1, h2, h3, h4, p, ul, ol, figure {
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+button {
+  font: inherit;
+  cursor: pointer;
+}
+
+table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+/* -------------------------------------------------------------------- */
+/* 2. TOKENS                                                             */
+/* -------------------------------------------------------------------- */
+:root {
+  /* Cor — marca */
+  --color-brand: #0f5c56;
+  --color-brand-dark: #0a3f3b;
+  --color-brand-tint: #e7f2f0;
+
+  /* Cor — neutros (telas administrativas) */
+  --color-bg: #f5f6f4;
+  --color-surface: #ffffff;
+  --color-border: #dde2df;
+  --color-ink: #1b2421;
+  --color-ink-muted: #5b6670;
+
+  /* Cor — semântica de senha */
+  --color-normal: #3b8c6e;
+  --color-normal-tint: #e6f2ec;
+  --color-preferencial: #c97a2b;
+  --color-preferencial-tint: #faf0e3;
+
+  /* Cor — foco / feedback */
+  --color-focus: #2b6cb0;
+
+  /* Tipografia */
+  --font-display: "Zilla Slab", Georgia, "Times New Roman", serif;
+  --font-body: "IBM Plex Sans", "Segoe UI", Roboto, Arial, sans-serif;
+
+  --fs-xs: 0.8125rem;   /* 13px */
+  --fs-sm: 0.9375rem;   /* 15px */
+  --fs-base: 1rem;      /* 16px */
+  --fs-md: 1.125rem;    /* 18px */
+  --fs-lg: 1.375rem;    /* 22px */
+  --fs-xl: clamp(1.6rem, 1.3rem + 1.1vw, 2.1rem);
+  --fs-2xl: clamp(2.1rem, 1.5rem + 2.4vw, 3.25rem);
+
+  /* Espaçamento — escala consistente usada em toda a aplicação */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+  --space-8: 64px;
+
+  /* Raio e sombra */
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 18px;
+  --shadow-sm: 0 1px 2px rgba(15, 23, 21, 0.07);
+  --shadow-md: 0 6px 16px rgba(15, 23, 21, 0.10);
+
+  /* Container */
+  --container-width: 1180px;
+}
+
+/* -------------------------------------------------------------------- */
+/* 3. TIPOGRAFIA BASE                                                    */
+/* -------------------------------------------------------------------- */
+body {
+  font-family: var(--font-body);
+  font-size: var(--fs-base);
+  line-height: 1.5;
+  color: var(--color-ink);
+  background: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  line-height: 1.2;
+  color: var(--color-brand-dark);
+}
+
+h1 { font-size: var(--fs-xl); }
+h2 { font-size: var(--fs-lg); }
+h3 { font-size: var(--fs-md); }
+
+p {
+  max-width: 68ch;
+}
+
+/* Números de senha / horários: alinhamento tabular para leitura rápida */
+.ticket-code,
+time {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1;
+}
+
+/* -------------------------------------------------------------------- */
+/* 4. LAYOUT HELPERS                                                     */
+/* -------------------------------------------------------------------- */
+.container {
+  width: 100%;
+  max-width: var(--container-width);
+  margin-inline: auto;
+  padding-inline: var(--space-4);
+}
+
+@media (min-width: 600px) {
+  .container {
+    padding-inline: var(--space-6);
+  }
+}
+
+/* Tabelas de dados não "quebram" bem em telas pequenas: em vez de
+   espremer colunas até ficarem ilegíveis, permitimos rolagem horizontal
+   dentro de um contêiner com borda — solução real e comum em dashboards. */
+.table-wrap {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  background: var(--color-surface);
+}
+
+.table-wrap table {
+  min-width: 560px;
+}
+
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+}
+
+/* -------------------------------------------------------------------- */
+/* 5. BOTÕES                                                             */
+/* -------------------------------------------------------------------- */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  padding: var(--space-3) var(--space-5);
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  line-height: 1.2;
+  transition: transform 0.08s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.btn:active {
+  transform: translateY(1px);
+}
+
+.btn--primary {
+  background: var(--color-brand);
+  border-color: var(--color-brand);
+  color: #ffffff;
+}
+
+.btn--primary:hover {
+  background: var(--color-brand-dark);
+  border-color: var(--color-brand-dark);
+}
+
+.btn--secondary {
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  color: var(--color-ink);
+}
+
+.btn--secondary:hover {
+  border-color: var(--color-brand);
+  color: var(--color-brand-dark);
+}
+
+.btn--ghost {
+  background: transparent;
+  border-color: transparent;
+  color: var(--color-brand-dark);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn--lg {
+  padding: var(--space-4) var(--space-6);
+  font-size: var(--fs-md);
+  border-radius: var(--radius-md);
+}
+
+.btn--sm {
+  padding: var(--space-2) var(--space-3);
+  font-size: var(--fs-xs);
+}
+
+/* -------------------------------------------------------------------- */
+/* 6. BADGES                                                             */
+/* -------------------------------------------------------------------- */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-1);
+  padding: 2px var(--space-2);
+  border-radius: 999px;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 1.4;
+}
+
+.badge--preferencial {
+  background: var(--color-preferencial-tint);
+  color: var(--color-preferencial);
+}
+
+.badge--normal {
+  background: var(--color-normal-tint);
+  color: var(--color-normal);
+}
+
+.status {
+  font-weight: 600;
+}
+
+.status--aguardando {
+  color: var(--color-ink-muted);
+}
+
+.status--atendimento {
+  color: var(--color-brand);
+}
+
+/* -------------------------------------------------------------------- */
+/* 7. CARDS                                                              */
+/* -------------------------------------------------------------------- */
+.card {
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  padding: var(--space-5);
+  box-shadow: var(--shadow-sm);
+}
+
+/* -------------------------------------------------------------------- */
+/* 8. FORMULÁRIOS                                                        */
+/* -------------------------------------------------------------------- */
+fieldset {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+legend {
+  font-family: var(--font-display);
+  font-size: var(--fs-md);
+  font-weight: 600;
+  color: var(--color-brand-dark);
+  padding: 0;
+  margin-bottom: var(--space-2);
+}
+
+label {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  margin-bottom: var(--space-2);
+}
+
+input[type="text"] {
+  width: 100%;
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  font-family: var(--font-body);
+  font-size: var(--fs-md);
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+input[type="text"]::placeholder {
+  color: #9aa3a0;
+}
+
+/* -------------------------------------------------------------------- */
+/* 9. ACESSIBILIDADE                                                     */
+/* -------------------------------------------------------------------- */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+.btn:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    transition-duration: 0.001ms !important;
+    animation-duration: 0.001ms !important;
+  }
+}

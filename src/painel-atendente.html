@@ -1,68 +1,108 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Painel do Atendente - QueueSmart</title>
-</head>
-<body>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Painel do Atendente - QueueSmart</title>
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+        <link rel="stylesheet" href="css/base.css">
+        <link rel="stylesheet" href="css/admin.css">
+    </head>
+    <body class="theme-admin">
 
-    <header>
-        <h1>🎫 Sistema de Fila</h1>
-        <p>Painel do Atendente</p>
-        <div>
-            <span>Atendente:</span>
-            <span>Guichê:</span>
-            <span>Data:</span>
+        <header class="site-header">
+            <div class="brand">
+                <h1>🎫 Sistema de Fila</h1>
+                <p>Painel do Atendente</p>
+            </div>
+            <div class="identity">
+                <span>Atendente: <strong>—</strong></span>
+                <span>Guichê: <strong>—</strong></span>
+                <span>Data: <strong>—</strong></span>
+            </div>
+        </header>
+
+        <div class="container admin-main">
+            <section class="rule-banner card">
+                <h2>Regra de Prioridade</h2>
+                <p>2 atendimentos preferenciais para cada 1 normal</p>
+                <p class="next-ticket">Próximo: <span class="ticket-code">—</span></p>
+            </section>
+
+            <nav class="action-bar" aria-label="Ações do atendente">
+                <button class="btn btn--primary btn--lg">Chamar Próximo</button>
+                <a class="btn btn--secondary" href="relatorios.html">Relatórios</a>
+            </nav>
+
+            <main>
+                <section class="card">
+                    <h2>Fila de Espera</h2>
+                    <p class="report-meta">Total: <strong>—</strong> aguardando</p>
+
+                    <div class="queue-layout">
+                        <div class="table-wrap">
+                            <table class="queue-table">
+                                <thead>
+                                    <tr>
+                                        <th>Senha</th>
+                                        <th>Cliente</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Tempo</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <!-- Linhas de exemplo, só para demonstrar o layout
+(tabela em telas largas / cards em telas pequenas).
+Em produção, virão de dados reais/dinâmicos. -->
+                                    <tr>
+                                        <td class="ticket-code">A-036</td>
+                                        <td>Mariana Costa</td>
+                                        <td><span class="badge badge--normal">Normal</span></td>
+                                        <td><span class="status status--aguardando">Aguardando</span></td>
+                                        <td>4 min</td>
+                                        <td><button class="btn btn--primary btn--sm" type="button">Chamar</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ticket-code">A-037</td>
+                                        <td>José Almeida</td>
+                                        <td><span class="badge badge--preferencial">Preferencial</span></td>
+                                        <td><span class="status status--aguardando">Aguardando</span></td>
+                                        <td>2 min</td>
+                                        <td><button class="btn btn--primary btn--sm" type="button">Chamar</button></td>
+                                    </tr>
+                                    <tr>
+                                        <td class="ticket-code">A-038</td>
+                                        <td>Carla Menezes</td>
+                                        <td><span class="badge badge--normal">Normal</span></td>
+                                        <td><span class="status status--atendimento">Em Atendimento</span></td>
+                                        <td>6 min</td>
+                                        <td><button class="btn btn--secondary btn--sm" type="button">Finalizar</button></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <aside class="queue-summary">
+                            <h3>Resumo da Fila</h3>
+                            <ul>
+                                <li>Aguardando: <strong>—</strong></li>
+                                <li>Preferenciais: <strong>—</strong></li>
+                                <li>Em Atendimento: <strong>—</strong></li>
+                                <li>Tempo Médio de Espera: <strong>—</strong></li>
+                            </ul>
+                        </aside>
+                    </div>
+                </section>
+            </main>
         </div>
-    </header>
 
-    <section>
-        <h2>Regra de Prioridade</h2>
-        <p>2 atendimentos preferenciais para cada 1 normal</p>
-        <p>Próximo:</p>
-    </section>
+        <footer class="site-footer">
+            <p>&copy; 2026 Sistema de Fila - Painel do Atendente</p>
+        </footer>
 
-    <nav>
-        <button>Chamar Próximo</button>
-        <button><a href="relatorios.html">Relatórios</a></button>
-    </nav>
-
-    <main>
-        <section>
-            <h2>Fila de Espera</h2>
-            <p>Total: aguardando</p>
-
-            <table border="1">
-                <thead>
-                    <tr>
-                        <th>Senha</th>
-                        <th>Cliente</th>
-                        <th>Tipo</th>
-                        <th>Status</th>
-                        <th>Tempo</th>
-                        <th>Ações</th>
-                    </tr>
-                </thead>
-                <tbody>
-                </tbody>
-            </table>
-
-            <aside>
-                <h3>Resumo da Fila</h3>
-                <ul>
-                    <li>Aguardando:</li>
-                    <li>Preferenciais:</li>
-                    <li>Em Atendimento:</li>
-                    <li>Tempo Médio de Espera:</li>
-                </ul>
-            </aside>
-        </section>
-    </main>
-
-    <footer>
-        <p>&copy; 2026 Sistema de Fila - Painel do Atendente</p>
-    </footer>
-
-</body>
+    </body>
 </html>
