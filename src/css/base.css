@@ -144,10 +144,6 @@ h1 { font-size: var(--fs-xl); }
 h2 { font-size: var(--fs-lg); }
 h3 { font-size: var(--fs-md); }
 
-p {
-  max-width: 68ch;
-}
-
 /* Números de senha / horários: alinhamento tabular para leitura rápida */
 .ticket-code,
 time {
