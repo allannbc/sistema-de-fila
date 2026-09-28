@@ -6,5 +6,5 @@ function savePassword(type) {
 let normal = document.querySelector(".btn.btn--primary");
 let preferencial = document.querySelector(".btn.btn--secondary");
 
-normal.addEventListener("click", savePassword(0), true);
-preferencial.addEventListener("click", savePassword(1), true);
+normal.addEventListener("click", () => savePassword(0), true);
+preferencial.addEventListener("click", () => savePassword(1), true);
