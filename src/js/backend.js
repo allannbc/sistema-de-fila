@@ -8,8 +8,15 @@ import * as st from "./localStorageBackend.js";
 // 	time: 0
 // };
 
+const QUEUE_CHANGE = "Queue-change1982782898"
+
+function dispatchChange() {
+	window.dispatchEvent(new CustomEvent(QUEUE_CHANGE));
+}
+
 export function insertPassword(name, type) {
 	st.localStorageInsertPassword(name, type);
+	dispatchChange();
 }
 
 export function getNormalPasswords() {
@@ -93,6 +100,7 @@ export function getPassCount() {
 
 export function onQueueChange(func) {
 	st.localStorageOnQueueChange(func);
+	window.addEventListener(QUEUE_CHANGE, func);
 }
 
 export function getCurrent() {
@@ -100,5 +108,11 @@ export function getCurrent() {
 }
 
 export function popNext() {
-	return st.localStoragePopNext();
+	let tmp = st.localStoragePopNext();
+	dispatchChange();
+	return tmp;
+}
+
+export function getLastPasswords() {
+	return st.localStorageGetLastPasswords();
 }

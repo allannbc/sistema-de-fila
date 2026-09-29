@@ -1,5 +1,9 @@
 import {pad} from "./utils.js"
 
+function setItem(item, v) {
+	localStorage.setItem(item, v.toString());
+}
+
 export function localStorageInsertPassword(name, type) {
 	// Colocar no local storage pra testes
 	let pass = localStorage.getItem("pass-count");
@@ -32,12 +36,19 @@ export function localStorageInsertPassword(name, type) {
 }
 
 export function localStorageGetNormalPasswords() {
-	let passwords = localStorage.getItem("passwords-A");
+	let passwords = localStorage.getItem("passwords-A") ?? "";
 	let ps = [];
 
-	if (passwords === null) {
-		return ps;
+	for (let i = 0; i < passwords.length; i += 5) {
+		ps = [...ps, passwords.substring(i, i + 5)]
 	}
+
+	return ps;
+}
+
+export function localStorageGetLastPasswords() {
+	let passwords = localStorage.getItem("last-passwords") ?? "";
+	let ps = [];
 
 	for (let i = 0; i < passwords.length; i += 5) {
 		ps = [...ps, passwords.substring(i, i + 5)]
@@ -92,14 +103,40 @@ export function localStorageGetPassCount() {
 				return 0;
 			}
 			return parseInt(ans);
+		},
+		get remNormal() {
+			let ans = localStorage.getItem("pass-rem-A");
+			if (ans === null) {
+				return 0;
+			}
+			return parseInt(ans);
+		},
+		get remPriority() {
+			let ans = localStorage.getItem("pass-rem-P");
+			if (ans === null) {
+				return 0;
+			}
+			return parseInt(ans);
+		},
+		get rem() {
+			let ans = localStorage.getItem("pass-rem");
+			if (ans === null) {
+				return 0;
+			}
+			return parseInt(ans);
+		},
+		get timeSum() {
+			let ans = localStorage.getItem("time-sum");
+			if (ans === null) {
+				return 0;
+			}
+			return parseInt(ans);
 		}
 	}
 }
 
 export function localStorageOnQueueChange(func) {
-	window.addEventListener("storage", () => {
-		func();
-	});
+	window.addEventListener("storage", func);
 }
 
 export function localStorageGetCurrentCount() {
@@ -132,15 +169,28 @@ function getNext() {
 	return priority[0];
 }
 
+const REMEMBER = 5;
+
+function addToTmp(pass) {
+	let str = localStorage.getItem("last-passwords") ?? "";
+	if (str.length == REMEMBER * 5) {
+		str = str.substring(0, (REMEMBER - 1) * 5);
+	}
+
+	str = pass + str;
+	setItem("last-passwords", str);
+}
+
 export function localStoragePopNext() {
 	let pass = getNext();
 
-	if (pass === null) {
-		localStorage.setItem("calling-password", "-");
+	if (pass === "-") {
+		setItem("calling-password", "-");
 		return "-";
 	}
 
-	localStorage.setItem("calling-password", pass);
+	setItem("calling-password", pass);
+	addToTmp(pass);
 
 	let co = localStorageGetPassCount();
 	let index = localStorageGetCurrentCount();
@@ -152,13 +202,11 @@ export function localStoragePopNext() {
 			str = str + priority[i];
 		}
 
-		let pri = co.priority - 1;
-		let all = co.all - 1;
-
-		localStorage.setItem("pass-count-P", pri.toString());
-		localStorage.setItem("pass-count", all.toString());
-		localStorage.setItem("passwords-P", str);
-		localStorage.setItem("cur-index", index.toString());
+		setItem("pass-rem-P", co.remPriority + 1);
+		setItem("pass-rem", co.rem + 1);
+		setItem("passwords-P", str);
+		setItem("cur-index", index);
+		setItem("time-sum", co.timeSum + Date.now() - localStoragePassToData(pass).time);
 		return pass;
 	}
 
@@ -169,12 +217,10 @@ export function localStoragePopNext() {
 		str = str + normal[i];
 	}
 
-	let nor = co.normal - 1;
-	let all = co.all - 1;
-
-	localStorage.setItem("pass-count-P", nor.toString());
-	localStorage.setItem("pass-count", all.toString());
-	localStorage.setItem("passwords-P", str);
-	localStorage.setItem("cur-index", index.toString());
+	setItem("pass-rem-A", co.remNormal + 1);
+	setItem("pass-rem", co.rem + 1);
+	setItem("passwords-A", str);
+	setItem("cur-index", index);
+	setItem("time-sum", co.timeSum + Date.now() - localStoragePassToData(pass).time);
 	return pass;
 }

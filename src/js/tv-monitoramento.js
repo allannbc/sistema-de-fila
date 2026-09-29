@@ -21,7 +21,8 @@ function updateQueue() {
 		return res + html;
 	}, "");
 
-	document.querySelector(".queue-total").innerText = "Total: " + backend.getPassCount().all.toString() + " aguardando"
+	const total = backend.getPassCount().all - backend.getPassCount().rem;
+	document.querySelector(".queue-total").innerText = "Total: " + total.toString() + " aguardando"
 }
 
 function capitalizeFirstLetter(val) {
@@ -60,10 +61,31 @@ function updateNext() {
 	next.innerHTML = html;
 }
 
+function updateTime() {
+	const time = new Date(backend.getPassCount().timeSum / backend.getPassCount().rem).getMinutes();
+
+	const place = document.querySelector(".stat-value");
+	place.innerText = time.toString() + " min";
+}
+
+function updateNotices() {
+	let notices = document.querySelector(".tv-panel.tv-panel--alerts");
+	let html = "<h3>Avisos</h3>";
+	let pass = backend.getLastPasswords();
+
+	for (let i = 0; i < pass.length; i++) {
+		html = html + "<p>Senha " + pass[i] + " chamada</p>"
+	}
+
+	notices.innerHTML = html;
+}
+
 function updateMonitor() {
 	updateQueue();
 	updateCalling();
 	updateNext();
+	updateTime();
+	updateNotices();
 }
 
 updateMonitor();
