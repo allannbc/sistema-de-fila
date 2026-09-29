@@ -8,8 +8,6 @@ import * as st from "./localStorageBackend.js";
 // 	time: 0
 // };
 
-const listeners = new Set();
-
 export function insertPassword(name, type) {
 	st.localStorageInsertPassword(name, type);
 }

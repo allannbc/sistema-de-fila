@@ -35,6 +35,10 @@ export function localStorageGetNormalPasswords() {
 	let passwords = localStorage.getItem("passwords-A");
 	let ps = [];
 
+	if (passwords === null) {
+		return ps;
+	}
+
 	for (let i = 0; i < passwords.length; i += 5) {
 		ps = [...ps, passwords.substring(i, i + 5)]
 	}
@@ -45,6 +49,10 @@ export function localStorageGetNormalPasswords() {
 export function localStorageGetPriorityPasswords() {
 	let passwords = localStorage.getItem("passwords-P");
 	let ps = [];
+
+	if (passwords === null) {
+		return ps;
+	}
 
 	for (let i = 0; i < passwords.length; i += 5) {
 		ps = [...ps, passwords.substring(i, i + 5)]
