@@ -190,6 +190,7 @@ export function localStoragePopNext() {
 	}
 
 	setItem("calling-password", pass);
+	setItem(pass + "-attended", "1");
 	addToTmp(pass);
 
 	let co = localStorageGetPassCount();

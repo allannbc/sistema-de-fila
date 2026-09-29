@@ -62,7 +62,8 @@ function updateNext() {
 }
 
 function updateTime() {
-	const time = new Date(backend.getPassCount().timeSum / backend.getPassCount().rem).getMinutes();
+	let co = backend.getPassCount();
+	const time = new Date(co.rem === 0 ? 0 : co.timeSum / co.rem).getMinutes();
 
 	const place = document.querySelector(".stat-value");
 	place.innerText = time.toString() + " min";
