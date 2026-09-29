@@ -101,3 +101,80 @@ export function localStorageOnQueueChange(func) {
 		func();
 	});
 }
+
+export function localStorageGetCurrentCount() {
+	let tmp = localStorage.getItem("cur-index");
+	return tmp === null ? 0 : parseInt(tmp);
+}
+
+export function localStorageSetCurrentCount(num) {
+	localStorage.setItem("cur-index", num.toString());
+}
+
+export function localStorageGetCurrent() {
+	return localStorage.getItem("calling-password") ?? "-";
+}
+
+function getNext() {
+	let priority = localStorageGetPriorityPasswords();
+	let index = localStorageGetCurrentCount();
+
+	if (index === 2 || priority.length === 0) {
+		let normal = localStorageGetNormalPasswords();
+
+		if (normal.length === 0) {
+			return "-";
+		}
+
+		return normal[0];
+	}
+
+	return priority[0];
+}
+
+export function localStoragePopNext() {
+	let pass = getNext();
+
+	if (pass === null) {
+		localStorage.setItem("calling-password", "-");
+		return "-";
+	}
+
+	localStorage.setItem("calling-password", pass);
+
+	let co = localStorageGetPassCount();
+	let index = localStorageGetCurrentCount();
+	if (pass[0] === 'P') {
+		let priority = localStorageGetPriorityPasswords();
+		let str = "";
+		index = Math.min(index + 1, 2);
+		for (let i = 1; i < priority.length; i++) {
+			str = str + priority[i];
+		}
+
+		let pri = co.priority - 1;
+		let all = co.all - 1;
+
+		localStorage.setItem("pass-count-P", pri.toString());
+		localStorage.setItem("pass-count", all.toString());
+		localStorage.setItem("passwords-P", str);
+		localStorage.setItem("cur-index", index.toString());
+		return pass;
+	}
+
+	index = 0;
+	let normal = localStorageGetNormalPasswords();
+	let str = "";
+	for (let i = 1; i < normal.length; i++) {
+		str = str + normal[i];
+	}
+
+	let nor = co.normal - 1;
+	let all = co.all - 1;
+
+	localStorage.setItem("pass-count-P", nor.toString());
+	localStorage.setItem("pass-count", all.toString());
+	localStorage.setItem("passwords-P", str);
+	localStorage.setItem("cur-index", index.toString());
+	return pass;
+}

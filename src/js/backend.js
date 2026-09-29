@@ -20,16 +20,67 @@ export function getPriorityPasswords() {
 	return st.localStorageGetPriorityPasswords();
 }
 
+function getCurrentCount() {
+	return st.localStorageGetCurrentCount();
+}
+
+function setCurrentCount(num) {
+	st.localStorageSetCurrentCount(num);
+}
+
 export function getSortedPasswords() {
 	let normal = getNormalPasswords();
 	let priority = getPriorityPasswords();
 
-	return [...normal, ...priority].toSorted((a, b) => {
-		let timea = localStorage.getItem(a + "-time");
-		let timeb = localStorage.getItem(b + "-time");
+	let passwords = [];
+	let index = getCurrentCount();
 
-		return parseInt(timea) - parseInt(timeb);
-	});
+	let i = 0;
+	let j = 0;
+
+	while (i < normal.length && j < priority.length) {
+		if (index == 2) {
+			index = 0;
+			passwords = [...passwords, normal[i]];
+			i++;
+			continue;
+		}
+
+		passwords = [...passwords, priority[j]];
+		index++;
+		j++;
+	}
+
+	while (i < normal.length) {
+		index = 0;
+		passwords = [...passwords, normal[i]];
+		i++;
+	}
+
+	while (j < priority.length) {
+		index = Math.min(index + 1, 2);
+		passwords = [...passwords, priority[j]];
+		j++;
+	}
+
+	return passwords;
+}
+
+export function getNext() {
+	let priority = getPriorityPasswords();
+	let index = getCurrentCount();
+
+	if (index === 2 || priority.length === 0) {
+		let normal = getNormalPasswords();
+
+		if (normal.length === 0) {
+			return "-";
+		}
+
+		return normal[0];
+	}
+
+	return priority[0];
 }
 
 export function passToData(pass) {
@@ -42,4 +93,12 @@ export function getPassCount() {
 
 export function onQueueChange(func) {
 	st.localStorageOnQueueChange(func);
+}
+
+export function getCurrent() {
+	return st.localStorageGetCurrent();
+}
+
+export function popNext() {
+	return st.localStoragePopNext();
 }

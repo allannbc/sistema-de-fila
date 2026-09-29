@@ -1,5 +1,5 @@
 import {getTime, getDate} from "./utils.js"
-import {getSortedPasswords, passToData, getPassCount, onQueueChange} from "./backend.js"
+import * as backend from "./backend.js"
 
 let time = document.querySelector("#time");
 let date = document.querySelector("#date");
@@ -10,7 +10,7 @@ function updateDate() {
 }
 
 function updateQueue() {
-	const sortedData = getSortedPasswords().map(passToData);
+	const sortedData = backend.getSortedPasswords().map(backend.passToData);
 
 	document.querySelector(".queue-chips").innerHTML = sortedData.reduce((res, data) => {
 		let html = "<li>" + data.pass;
@@ -21,11 +21,53 @@ function updateQueue() {
 		return res + html;
 	}, "");
 
-	document.querySelector(".queue-total").innerText = "Total: " + getPassCount().all.toString() + " aguardando"
+	document.querySelector(".queue-total").innerText = "Total: " + backend.getPassCount().all.toString() + " aguardando"
 }
 
-updateQueue();
+function capitalizeFirstLetter(val) {
+    return String(val).charAt(0).toUpperCase() + String(val).slice(1);
+}
+
+function updateCalling() {
+	let pass = backend.getCurrent();
+
+	let calling = document.querySelector(".ticket-code");
+
+	if (pass === "-") {
+		calling.innerText = "-";
+		return;
+	}
+
+	let data = backend.passToData(pass);
+	calling.innerText = pass + " - " + capitalizeFirstLetter(data.name);
+}
+
+function updateNext() {
+	let pass = backend.getNext();
+
+	const next = document.querySelector(".next-up");
+
+	if (pass === "-") {
+		next.innerText = "-";
+		return;
+	}
+
+	let html = "Próximo: <strong>" + pass.toString() + "</strong>";
+	if (pass[0] === 'P') {
+		html = html + "<span class=\"badge badge--preferencial\">Preferencial</span>";
+	}
+
+	next.innerHTML = html;
+}
+
+function updateMonitor() {
+	updateQueue();
+	updateCalling();
+	updateNext();
+}
+
+updateMonitor();
 updateDate();
 
 setInterval(updateDate, 1000);
-onQueueChange(updateQueue);
+backend.onQueueChange(updateMonitor);
