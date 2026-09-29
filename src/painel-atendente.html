@@ -29,7 +29,8 @@
             <section class="rule-banner card">
                 <h2>Regra de Prioridade</h2>
                 <p>2 atendimentos preferenciais para cada 1 normal</p>
-                <p class="next-ticket">Próximo: <span class="ticket-code">—</span></p>
+                <p class="next-ticket">Chamando: <span id="calling-ticket" class="ticket-code">—</span></p>
+                <p class="next-ticket">Próximo: <span id="next-ticket" class="ticket-code">—</span></p>
             </section>
 
             <nav class="action-bar" aria-label="Ações do atendente">
@@ -56,33 +57,6 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <!-- Linhas de exemplo, só para demonstrar o layout
-(tabela em telas largas / cards em telas pequenas).
-Em produção, virão de dados reais/dinâmicos. -->
-                                    <tr>
-                                        <td class="ticket-code">A-036</td>
-                                        <td>Mariana Costa</td>
-                                        <td><span class="badge badge--normal">Normal</span></td>
-                                        <!-- <td><span class="status status--aguardando">Aguardando</span></td> -->
-                                        <td>4 min</td>
-                                        <!-- <td><button class="btn btn--primary btn--sm" type="button">Chamar</button></td> -->
-                                    </tr>
-                                    <tr>
-                                        <td class="ticket-code">A-037</td>
-                                        <td>José Almeida</td>
-                                        <td><span class="badge badge--preferencial">Preferencial</span></td>
-                                        <!-- <td><span class="status status--aguardando">Aguardando</span></td> -->
-                                        <td>2 min</td>
-                                        <!-- <td><button class="btn btn--primary btn--sm" type="button">Chamar</button></td> -->
-                                    </tr>
-                                    <tr>
-                                        <td class="ticket-code">A-038</td>
-                                        <td>Carla Menezes</td>
-                                        <td><span class="badge badge--normal">Normal</span></td>
-                                        <!-- <td><span class="status status--atendimento">Em Atendimento</span></td> -->
-                                        <td>6 min</td>
-                                        <!-- <td><button class="btn btn--secondary btn--sm" type="button">Finalizar</button></td> -->
-                                    </tr>
                                 </tbody>
                             </table>
                         </div>

@@ -2,7 +2,8 @@ import * as backend from "./backend.js";
 
 const tbody = document.querySelector(".queue-table tbody");
 const totalWaitingEl = document.querySelector(".report-meta strong");
-const nextTicketEl = document.querySelector(".next-ticket .ticket-code");
+const callingTicketEl = document.querySelector("#calling-ticket");
+const nextTicketEl = document.querySelector("#next-ticket");
 const summaryWaitingEl = document.querySelector(".queue-summary ul li:nth-child(1) strong");
 const summaryPriorityEl = document.querySelector(".queue-summary ul li:nth-child(2) strong");
 const summaryAvgEl = document.querySelector(".queue-summary ul li:nth-child(3) strong");
@@ -19,6 +20,13 @@ function getTypeLabel(pass) {
 
 function getTypeBadgeClass(pass) {
   return pass[0] === "P" ? "badge--preferencial" : "badge--normal";
+}
+
+function renderCalling() {
+  if (!callingTicketEl) return;
+
+  const calling = backend.getCurrent();
+  callingTicketEl.textContent = calling === "-" ? "—" : calling;
 }
 
 function renderNext() {
@@ -88,6 +96,7 @@ function renderQueue() {
 }
 
 function updatePanel() {
+  renderCalling();
   renderNext();
   renderQueue();
 }
