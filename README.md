@@ -98,3 +98,5 @@ Digitalizar e otimizar o processo de gerenciamento de filas, garantindo:
 [Documentação da etapa 3](docs/etapa-03.md)
 
 [Documentação da etapa 4](docs/etapa-04.md)
+
+[Documentação da etapa 5](docs/etapa-05.md)
