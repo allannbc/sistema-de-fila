@@ -1,32 +1,50 @@
-import {insertPassword} from "./backend.js"
+import {emitirSenha} from "./services/filaService.js";
+import {showFeedback, setBusy, errorMessage} from "./ui/feedback.js";
+import {capitalize} from "./utils.js";
 
-function savePassword(event, type) {
-	let name = document.querySelector("#nome-cliente");
-	console.log("Senha registrada: ", name.value, type);
+const TIPOS = ['A', 'P'];
+const LABELS = ['normal', 'preferencial'];
+
+const nameInput = document.querySelector("#nome-cliente");
+const normal = document.querySelector(".btn.btn--primary");
+const preferencial = document.querySelector(".btn.btn--secondary");
+const feedbackEl = document.querySelector("#feedback");
+
+async function savePassword(event, type) {
+	console.log("Senha solicitada: ", nameInput.value, TIPOS[type]);
 
 	const regex = /^[a-z]{3,30}$/;
-	if (!regex.test(name.value)) {
-		name.setCustomValidity("Nome inválido, deve conter apenas letras minúsculas.");
+	if (!regex.test(nameInput.value)) {
+		nameInput.setCustomValidity("Nome inválido, deve conter apenas letras minúsculas.");
 		console.log("Nome inválido.");
 		return;
 	}
 
-	name.setCustomValidity("");
+	nameInput.setCustomValidity("");
 
 	event.preventDefault();
 
-	let pref = [
-		'A',
-		'P'
-	];
+	const nome = nameInput.value;
 
-	insertPassword(name.value, pref[type]);
+	// carregando
+	showFeedback(feedbackEl, "loading", "Emitindo sua senha…");
+	setBusy([normal, preferencial], true);
 
-	name.value = "";
+	try {
+		// operação enviada ao servidor (simulado)
+		const senha = await emitirSenha(nome, TIPOS[type]);
+
+		// sucesso
+		showFeedback(feedbackEl, "success",
+			`Senha ${LABELS[type]} ${senha.codigo} emitida para ${capitalize(senha.nome)}. Aguarde ser chamado.`);
+		nameInput.value = "";
+	} catch (err) {
+		// erro (campo preservado para o cliente tentar de novo)
+		showFeedback(feedbackEl, "error", errorMessage(err));
+	} finally {
+		setBusy([normal, preferencial], false);
+	}
 }
-
-let normal = document.querySelector(".btn.btn--primary");
-let preferencial = document.querySelector(".btn.btn--secondary");
 
 normal.addEventListener("click", (event) => {savePassword(event, 0)}, false);
 preferencial.addEventListener("click", (event) => savePassword(event, 1), false);

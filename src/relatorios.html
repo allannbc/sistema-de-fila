@@ -9,6 +9,7 @@
         <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
         <link rel="stylesheet" href="css/base.css">
         <link rel="stylesheet" href="css/admin.css">
+        <script type="module" src="js/relatorios.js"></script>
     </head>
     <body class="theme-admin">
 
@@ -28,48 +29,70 @@
             <div class="container">
                 <section class="toolbar card">
                     <form class="toolbar-form" action="#" method="GET">
+                        <div class="toolbar-fields">
+                            <div>
+                                <label for="data-de">Data inicial</label>
+                                <input type="date" id="data-de" name="de" required>
+                            </div>
+                            <div>
+                                <label for="data-ate">Data final</label>
+                                <input type="date" id="data-ate" name="ate" required>
+                            </div>
+                        </div>
                         <div class="toolbar-actions">
-                            <button class="btn btn--primary" type="submit">Gerar Relatório</button>
+                            <button class="btn btn--primary" type="submit" id="btn-gerar">Gerar Relatório</button>
                             <button class="btn btn--secondary" type="reset">Limpar</button>
-                            <button class="btn btn--secondary" type="button">Exportar PDF</button>
+                            <button class="btn btn--secondary" type="button" id="btn-pdf">Exportar PDF</button>
                         </div>
                     </form>
+
+                    <div class="toolbar-extra">
+                        <button class="btn btn--secondary btn--sm" type="button" id="btn-importar">Importar dados de exemplo</button>
+                        <button class="btn btn--secondary btn--sm" type="button" id="btn-remover">Remover dados de exemplo</button>
+                        <label class="check" for="simular-falha">
+                            <input type="checkbox" id="simular-falha">
+                            Simular falha de comunicação (teste)
+                        </label>
+                    </div>
                 </section>
 
-                <section class="report card">
+                <p id="feedback" class="feedback" role="status" aria-live="polite" hidden></p>
+
+                <section class="report card" aria-busy="false">
                     <h2>Relatório Gerencial</h2>
-                    <p class="report-meta">Período: 01/08/2026 a 31/08/2026</p>
+                    <p class="report-meta" id="periodo">Período: —</p>
 
                     <section>
                         <h3>Resumo</h3>
-                        <ul class="stat-grid">
-                            <li class="stat-card"><span class="stat-value">1.847</span><span class="stat-label">Total de Atendimentos</span></li>
-                            <li class="stat-card"><span class="stat-value">1.463</span><span class="stat-label">Normais</span></li>
-                            <li class="stat-card"><span class="stat-value">384</span><span class="stat-label">Preferenciais</span></li>
-                            <!-- <li class="stat-card"><span class="stat-value">22%</span><span class="stat-label">Taxa de Prioridade</span></li> -->
-                            <li class="stat-card"><span class="stat-value">8.2 min</span><span class="stat-label">Tempo Médio de Espera</span></li>
-                            <!-- <li class="stat-card"><span class="stat-value">5.7 min</span><span class="stat-label">Tempo Médio de Atendimento</span></li> -->
-                            <!-- <li class="stat-card"><span class="stat-value">98%</span><span class="stat-label">Taxa de Satisfação</span></li> -->
-                        </ul>
+                        <ul class="stat-grid" id="resumo"></ul>
                     </section>
 
                     <section>
                         <h3>Distribuição por Prioridade</h3>
-                        <ul>
-                            <li>Normal: 1.463 (78%)</li>
-                            <li>Preferencial: 384 (22%)</li>
-                        </ul>
+                        <ul id="distribuicao"></ul>
+                    </section>
+
+                    <section class="chart-block">
+                        <h3>Senhas por Dia</h3>
+                        <div class="chart-head">
+                            <div class="segmented" role="radiogroup" aria-label="Tipo de contagem">
+                                <label><input type="radio" name="metrica" value="emitidas" checked><span>Emitidas</span></label>
+                                <label><input type="radio" name="metrica" value="atendidas"><span>Atendidas</span></label>
+                            </div>
+                            <div class="chart-legend" id="grafico-legenda"></div>
+                        </div>
+                        <figure class="chart" id="grafico"></figure>
+                        <p class="report-meta">Passe o mouse (ou use as setas do teclado) sobre o gráfico para ver os valores de cada dia. Os mesmos números estão na tabela abaixo.</p>
+                    </section>
+
+                    <section>
+                        <h3>Atendimentos por Dia</h3>
+                        <div id="por-dia"></div>
                     </section>
 
                     <section>
                         <h3>Atendimentos por Horário</h3>
-                        <ul>
-                            <li>08:00 - 10:00: 320 atendimentos</li>
-                            <li>10:00 - 12:00: 450 atendimentos</li>
-                            <li>12:00 - 14:00: 280 atendimentos</li>
-                            <li>14:00 - 16:00: 410 atendimentos</li>
-                            <li>16:00 - 18:00: 387 atendimentos</li>
-                        </ul>
+                        <div id="por-hora"></div>
                     </section>
                 </section>
             </div>

@@ -1,4 +1,6 @@
 import * as backend from "./backend.js";
+import {chamarProximo} from "./services/filaService.js";
+import {showFeedback, setBusy, errorMessage} from "./ui/feedback.js";
 
 const tbody = document.querySelector(".queue-table tbody");
 const totalWaitingEl = document.querySelector(".report-meta strong");
@@ -8,6 +10,7 @@ const summaryWaitingEl = document.querySelector(".queue-summary ul li:nth-child(
 const summaryPriorityEl = document.querySelector(".queue-summary ul li:nth-child(2) strong");
 const summaryAvgEl = document.querySelector(".queue-summary ul li:nth-child(3) strong");
 const callButton = document.querySelector(".action-bar .btn--primary");
+const feedbackEl = document.querySelector("#feedback");
 
 function formatWaitTime(ms) {
   const min = Math.floor(ms / 60000);
@@ -101,10 +104,27 @@ function updatePanel() {
   renderQueue();
 }
 
+async function callNext() {
+  showFeedback(feedbackEl, "loading", "Chamando próxima senha…");
+  setBusy([callButton], true);
+
+  try {
+    const result = await chamarProximo();
+
+    if (result.senha === null) {
+      showFeedback(feedbackEl, "success", "Nenhuma senha disponível para chamar no momento.");
+    } else {
+      showFeedback(feedbackEl, "success", `Chamando ${result.senha} — ${result.nome}.`);
+    }
+  } catch (err) {
+    showFeedback(feedbackEl, "error", errorMessage(err));
+  } finally {
+    setBusy([callButton], false);
+  }
+}
+
 if (callButton) {
-  callButton.addEventListener("click", () => {
-    backend.popNext();
-  });
+  callButton.addEventListener("click", callNext);
 }
 
 backend.onQueueChange(updatePanel);

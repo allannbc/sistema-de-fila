@@ -15,8 +15,9 @@ function dispatchChange() {
 }
 
 export function insertPassword(name, type) {
-	st.localStorageInsertPassword(name, type);
+	const password = st.localStorageInsertPassword(name, type);
 	dispatchChange();
+	return password;
 }
 
 export function getNormalPasswords() {

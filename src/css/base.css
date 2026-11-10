@@ -73,7 +73,8 @@ table {
   --color-brand-tint: #e7f2f0;
 
   /* Cor — neutros (telas administrativas) */
-  --color-bg: #f5f6f4;
+  /* --color-bg: #f5f6f4; */
+  --color-bg: #FFFFFF;
   --color-surface: #ffffff;
   --color-border: #dde2df;
   --color-ink: #1b2421;
@@ -337,7 +338,8 @@ label {
   margin-bottom: var(--space-2);
 }
 
-input[type="text"] {
+input[type="text"],
+input[type="date"] {
   width: 100%;
   padding: var(--space-3) var(--space-4);
   border: 1px solid var(--color-border);
@@ -353,11 +355,72 @@ input[type="text"]::placeholder {
 }
 
 /* -------------------------------------------------------------------- */
+/* 8.1 FEEDBACK DE OPERAÇÕES ASSÍNCRONAS (Etapa 05)                      */
+/*     carregando / sucesso / erro — usado por quiosque, painel e        */
+/*     relatórios                                                        */
+/* -------------------------------------------------------------------- */
+.feedback {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  border-radius: var(--radius-sm);
+  border-left: 4px solid var(--color-border);
+  background: var(--color-bg);
+  font-size: var(--fs-sm);
+  font-weight: 500;
+}
+
+.feedback[hidden] {
+  display: none;
+}
+
+.feedback--loading {
+  border-left-color: var(--color-focus);
+  background: #eaf2fb;
+}
+
+.feedback--success {
+  border-left-color: var(--color-normal);
+  background: var(--color-normal-tint);
+}
+
+.feedback--error {
+  border-left-color: #b3261e;
+  background: #fdecea;
+  color: #7a1812;
+}
+
+.feedback .btn {
+  margin-left: auto;
+}
+
+.spinner {
+  width: 1em;
+  height: 1em;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.btn[disabled] {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* -------------------------------------------------------------------- */
 /* 9. ACESSIBILIDADE                                                     */
 /* -------------------------------------------------------------------- */
 a:focus-visible,
 button:focus-visible,
 input:focus-visible,
+select:focus-visible,
 .btn:focus-visible {
   outline: 3px solid var(--color-focus);
   outline-offset: 2px;

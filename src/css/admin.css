@@ -21,6 +21,8 @@
    7. Painel do atendente — barra de ações
    8. Painel do atendente — fila (tabela + resumo em grid,
       com a tabela virando cards abaixo de 600px)
+   9. Relatórios — filtros, tabela diária e impressão (Etapa 05)
+   10. Relatórios — gráfico de senhas por dia (Etapa 05)
    ========================================================================= */
 
 /* -------------------------------------------------------------------- */
@@ -284,8 +286,8 @@ body.theme-admin {
 /* 8. PAINEL DO ATENDENTE — FILA (TABELA + RESUMO)                       */
 /* -------------------------------------------------------------------- */
 .queue-layout {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: var(--space-5);
   align-items: start;
 }
@@ -327,14 +329,14 @@ body.theme-admin {
    ao lado do valor (via ::before) — sem precisar de nenhuma marcação
    extra no HTML, nem de JavaScript. */
 @media (max-width: 716px) {
-  .table-wrap {
+  .queue-layout .table-wrap {
     overflow-x: visible;
     border: none;
     border-radius: 0;
     background: transparent;
   }
 
-  .table-wrap .queue-table {
+  .queue-layout .table-wrap .queue-table {
     min-width: 0;
     width: 100%;
   }
@@ -404,5 +406,266 @@ body.theme-admin {
 @media (min-width: 1024px) {
   .queue-layout {
     grid-template-columns: 2.2fr 1fr;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 9. RELATÓRIOS — FILTROS, TABELA DIÁRIA E IMPRESSÃO (Etapa 05)         */
+/* -------------------------------------------------------------------- */
+.toolbar-fields {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+  margin-bottom: var(--space-4);
+}
+
+.toolbar-fields label {
+  margin-bottom: var(--space-1);
+}
+
+@media (min-width: 600px) {
+  .toolbar-fields {
+    grid-template-columns: repeat(2, minmax(0, 220px));
+  }
+}
+
+.toolbar-extra {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px dashed var(--color-border);
+}
+
+.toolbar-extra .check {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  margin: 0;
+  font-weight: 500;
+}
+
+.toolbar + .feedback,
+.report-feedback {
+  margin-top: calc(-1 * var(--space-3));
+}
+
+.report-table {
+  min-width: 760px;
+}
+
+.report .table-wrap {
+  margin-top: var(--space-4);
+}
+
+.report-table tbody td,
+.report-table tfoot th {
+  white-space: nowrap;
+}
+
+@media print {
+  .site-header,
+  .site-footer,
+  .toolbar,
+  .feedback {
+    display: none !important;
+  }
+
+  .card {
+    border: none;
+    box-shadow: none;
+  }
+}
+
+/* -------------------------------------------------------------------- */
+/* 10. RELATÓRIOS — GRÁFICO DE SENHAS POR DIA (Etapa 05)                 */
+/*     Cores validadas (CVD/contraste) — laranja segue o "preferencial"  */
+/*     dos badges; verde-água = normal; azul = total.                    */
+/* -------------------------------------------------------------------- */
+.chart-block {
+  --series-normal: #1baf7a;
+  --series-preferencial: #eb6834;
+  --series-total: #2a78d6;
+  --chart-grid: #e1e0d9;
+}
+
+.chart-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3) var(--space-5);
+  margin-top: var(--space-4);
+}
+
+.segmented {
+  display: inline-flex;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+}
+
+.segmented label {
+  position: relative;
+  margin: 0;
+  cursor: pointer;
+}
+
+.segmented input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+
+.segmented span {
+  display: block;
+  padding: var(--space-2) var(--space-4);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--color-ink-muted);
+  background: var(--color-surface);
+}
+
+.segmented label + label span {
+  border-left: 1px solid var(--color-border);
+}
+
+.segmented input:checked + span {
+  background: var(--color-brand);
+  color: #ffffff;
+}
+
+.segmented input:focus-visible + span {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+.chart-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  font-size: var(--fs-sm);
+}
+
+.chart-legend__item {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.chart-key {
+  display: inline-block;
+  width: 18px;
+  height: 0;
+  border-top: 3px solid currentColor;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
+.chart {
+  position: relative;
+  margin: var(--space-4) 0 var(--space-2);
+  transition: opacity 0.15s ease;
+}
+
+/* recarregando: mantém o quadro anterior, só esmaecido */
+.report[aria-busy="true"] .chart {
+  opacity: 0.55;
+}
+
+.chart svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  border-radius: var(--radius-sm);
+}
+
+.chart svg:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: 4px;
+}
+
+.chart__grid {
+  stroke: var(--chart-grid);
+  stroke-width: 1;
+}
+
+.chart__tick {
+  font-family: var(--font-body);
+  font-size: 12px;
+  fill: var(--color-ink-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+}
+
+.chart__dot {
+  stroke: var(--color-surface);
+  stroke-width: 2;
+}
+
+.chart__cross {
+  stroke: var(--color-ink-muted);
+  stroke-width: 1;
+}
+
+.chart__overlay {
+  fill: transparent;
+  cursor: crosshair;
+}
+
+.chart__tooltip {
+  position: absolute;
+  z-index: 2;
+  pointer-events: none;
+  min-width: 170px;
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-sm);
+  box-shadow: var(--shadow-md);
+  font-size: var(--fs-xs);
+}
+
+.chart__tooltip[hidden] {
+  display: none;
+}
+
+.chart__tip-title {
+  margin-bottom: var(--space-1);
+  color: var(--color-ink-muted);
+  font-weight: 600;
+}
+
+.chart__tip-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 2px 0;
+}
+
+.chart__tip-row strong {
+  min-width: 2.5ch;
+  font-size: var(--fs-sm);
+  color: var(--color-ink);
+  font-variant-numeric: tabular-nums;
+}
+
+.chart__tip-name {
+  color: var(--color-ink-muted);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .chart {
+    transition: none;
   }
 }

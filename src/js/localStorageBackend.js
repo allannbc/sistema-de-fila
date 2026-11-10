@@ -1,4 +1,5 @@
 import {pad} from "./utils.js"
+import {registerIssued, registerCalled} from "./historicoDiario.js"
 
 function setItem(item, v) {
 	localStorage.setItem(item, v.toString());
@@ -22,7 +23,8 @@ export function localStorageInsertPassword(name, type) {
 	tmp = parseInt(passt) + 1;
 	localStorage.setItem("pass-count-" + type, tmp.toString());
 
-	let password = type + "-" + pad(passt, 3)
+	// usa o contador já incrementado (tmp) para a primeira senha ser A-001, como na documentação
+	let password = type + "-" + pad(tmp.toString(), 3)
 	localStorage.setItem(password + "-name", name);
 	localStorage.setItem(password + "-attended", "0");
 	localStorage.setItem(password + "-time", Date.now().toString());
@@ -33,6 +35,11 @@ export function localStorageInsertPassword(name, type) {
 	}
 	ps = ps + password;
 	localStorage.setItem("passwords-" + type, ps);
+
+	// Etapa 05: contabiliza a senha emitida no histórico do dia
+	registerIssued(type);
+
+	return password;
 }
 
 export function localStorageGetNormalPasswords() {
@@ -195,6 +202,11 @@ export function localStoragePopNext() {
 
 	let co = localStorageGetPassCount();
 	let index = localStorageGetCurrentCount();
+
+	// Etapa 05: contabiliza a chamada e o tempo de espera no histórico do dia
+	const waitMs = Date.now() - localStoragePassToData(pass).time;
+	registerCalled(pass[0], waitMs);
+
 	if (pass[0] === 'P') {
 		let priority = localStorageGetPriorityPasswords();
 		let str = "";
