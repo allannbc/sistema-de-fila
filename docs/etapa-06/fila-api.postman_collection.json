@@ -1,0 +1,710 @@
+{
+  "info": {
+    "name": "Sistema de Fila - API (Etapa 06)",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "description": "Execute 'Criar senha normal' primeiro: ele guarda o ID em {{senhaId}} para as demais."
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://127.0.0.1:8001/api"
+    },
+    {
+      "key": "senhaId",
+      "value": ""
+    },
+    {
+      "key": "senhaAtendidaId",
+      "value": ""
+    }
+  ],
+  "item": [
+    {
+      "name": "Senhas (recurso principal)",
+      "item": [
+        {
+          "name": "Criar senha normal",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ]
+            },
+            "description": "Emite uma senha. Retorna 201 e o cabeçalho Location.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"ana\",\n  \"tipo\": \"A\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));",
+                  "const s = pm.response.json();",
+                  "pm.environment.set(\"senhaId\", s.id);",
+                  "pm.collectionVariables.set(\"senhaId\", s.id);",
+                  "pm.test(\"código gerado\", () => pm.expect(s.codigo).to.match(/^A-\\d{3}$/));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Criar senha preferencial",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"caio\",\n  \"tipo\": \"P\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar senhas",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));",
+                  "pm.test(\"tem total e dados\", () => { const j = pm.response.json(); pm.expect(j).to.have.property(\"total\"); pm.expect(j.dados).to.be.an(\"array\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Listar senhas (filtros)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas?tipo=P&atendida=false&nome=ca",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ],
+              "query": [
+                {
+                  "key": "tipo",
+                  "value": "P"
+                },
+                {
+                  "key": "atendida",
+                  "value": "false"
+                },
+                {
+                  "key": "nome",
+                  "value": "ca"
+                }
+              ]
+            },
+            "description": "Filtros opcionais: tipo (A|P), atendida (true|false), nome (contém)."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Consultar senha por ID",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/{{senhaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "{{senhaId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Substituir senha (PUT)",
+          "request": {
+            "method": "PUT",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/{{senhaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "{{senhaId}}"
+              ]
+            },
+            "description": "PUT exige o objeto completo editável (nome). O tipo, se enviado, deve ser o mesmo.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"ana\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Alterar senha parcialmente (PATCH)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/{{senhaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "{{senhaId}}"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"beatriz\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remover senha",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/{{senhaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "{{senhaId}}"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 204\", () => pm.response.to.have.status(204));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Fila e atendimento",
+      "item": [
+        {
+          "name": "Ver fila (ordem de chamada)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/fila",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "fila"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Chamar próxima senha",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/atendimentos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "atendimentos"
+              ]
+            },
+            "description": "201 com a senha chamada; 200 com senha=null se a fila estiver vazia."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200 ou 201\", () => pm.expect([200, 201]).to.include(pm.response.code));",
+                  "const j = pm.response.json(); if (j.senha) pm.collectionVariables.set(\"senhaAtendidaId\", j.senha.id);"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Relatórios",
+      "item": [
+        {
+          "name": "Relatório do período",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/relatorios?de=2026-11-01&ate=2026-11-30",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "relatorios"
+              ],
+              "query": [
+                {
+                  "key": "de",
+                  "value": "2026-11-01"
+                },
+                {
+                  "key": "ate",
+                  "value": "2026-11-30"
+                }
+              ]
+            },
+            "description": "Histórico diário consolidado: totais por tipo, espera média, por dia e por hora."
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Relatório - período inválido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/relatorios?de=2026-12-01&ate=2026-11-01",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "relatorios"
+              ],
+              "query": [
+                {
+                  "key": "de",
+                  "value": "2026-12-01"
+                },
+                {
+                  "key": "ate",
+                  "value": "2026-11-01"
+                }
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Importar dias de exemplo",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/relatorios/importacao",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "relatorios",
+                "importacao"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"dias\": [\n    {\n      \"date\": \"2026-11-02\",\n      \"emitidas\": {\n        \"A\": 40,\n        \"P\": 10\n      },\n      \"atendidas\": {\n        \"A\": 38,\n        \"P\": 10\n      },\n      \"esperaTotalMs\": {\n        \"A\": 19000000,\n        \"P\": 2400000\n      },\n      \"porHora\": {\n        \"09\": {\n          \"A\": 12,\n          \"P\": 3\n        },\n        \"10\": {\n          \"A\": 26,\n          \"P\": 7\n        }\n      }\n    },\n    {\n      \"date\": \"2026-11-03\",\n      \"emitidas\": {\n        \"A\": 40,\n        \"P\": 10\n      },\n      \"atendidas\": {\n        \"A\": 38,\n        \"P\": 10\n      },\n      \"esperaTotalMs\": {\n        \"A\": 19000000,\n        \"P\": 2400000\n      },\n      \"porHora\": {\n        \"09\": {\n          \"A\": 12,\n          \"P\": 3\n        },\n        \"10\": {\n          \"A\": 26,\n          \"P\": 7\n        }\n      }\n    }\n  ]\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 201\", () => pm.response.to.have.status(201));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Remover dias de exemplo",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/relatorios/exemplos",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "relatorios",
+                "exemplos"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 200\", () => pm.response.to.have.status(200));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Erros",
+      "item": [
+        {
+          "name": "Erro 400 - validação",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ]
+            },
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"Ana1\",\n  \"tipo\": \"X\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));",
+                  "pm.test(\"formato de erro padrão\", () => { const j = pm.response.json(); pm.expect(j.sucesso).to.eql(false); pm.expect(j.codigo).to.eql(\"VALIDACAO\"); });"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Erro 400 - ID inválido",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/abc",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "abc"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 400\", () => pm.response.to.have.status(400));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Erro 404 - senha inexistente",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/999999",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "999999"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 404\", () => pm.response.to.have.status(404));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Erro 405 - método não permitido",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "{{baseUrl}}/senhas",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas"
+              ]
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 405\", () => pm.response.to.have.status(405));"
+                ]
+              }
+            }
+          ]
+        },
+        {
+          "name": "Erro 409 - senha já atendida",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/senhas/{{senhaAtendidaId}}",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "senhas",
+                "{{senhaAtendidaId}}"
+              ]
+            },
+            "description": "Execute antes 'Chamar próxima senha'. O ID usado vem de {{senhaAtendidaId}}.",
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nome\": \"novo\"\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            }
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test(\"Status 409\", () => pm.response.to.have.status(409));"
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
