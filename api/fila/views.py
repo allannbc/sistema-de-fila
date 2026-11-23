@@ -80,6 +80,7 @@ def _editar_senha(request, pk, parcial):
     if detalhes:
         validators.levantar(detalhes)
 
+    services.renomear_senha(senha.id, nome)
     senha.nome = nome
     return ok(senha.para_json())
 

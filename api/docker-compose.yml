@@ -1,0 +1,22 @@
+# Sobe um PostgreSQL local com as credenciais padrão do settings.py:
+#   docker compose up -d
+services:
+  db:
+    image: postgres:16
+    container_name: fila-postgres
+    environment:
+      POSTGRES_DB: fila
+      POSTGRES_USER: fila
+      POSTGRES_PASSWORD: fila
+    ports:
+      - "5432:5432"
+    volumes:
+      - fila-dados:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U fila -d fila"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+volumes:
+  fila-dados:

@@ -4,6 +4,8 @@ from functools import wraps
 
 from django.http import JsonResponse
 
+from .dominio import BancoIndisponivel, ConflitoPersistencia, ErroPersistencia
+
 
 def erro(status, mensagem, codigo, detalhes=None):
     corpo = {"sucesso": False, "erro": mensagem, "codigo": codigo}
@@ -47,6 +49,12 @@ def rota(**metodos):
             return funcao(request, **kwargs)
         except ErroApi as e:
             return e.resposta
+        except BancoIndisponivel:
+            return erro(503, "Banco de dados indisponível. Tente novamente em instantes.", "BANCO_INDISPONIVEL")
+        except ConflitoPersistencia:
+            return erro(409, "A operação conflita com os dados já gravados.", "CONFLITO_PERSISTENCIA")
+        except ErroPersistencia:
+            return erro(500, "Erro ao acessar o banco de dados.", "ERRO_PERSISTENCIA")
     return view
 
 
